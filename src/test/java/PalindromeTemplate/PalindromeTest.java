@@ -10,55 +10,76 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
 public class PalindromeTest {
 
-    private final PrintStream standardOut = System.out;
-    private final ByteArrayOutputStream outputStreamCapture = new ByteArrayOutputStream();
-    private final InputStream originalIn = System.in;
-    private final InputStream in = new ByteArrayInputStream("Fish racecar kebbab exit".getBytes());
-
-    public void setUp() {
-        System.setOut(new PrintStream(outputStreamCapture));
-        System.setIn(in);
-    }
-
     @Test
-    public void TestIO() {
-        setUp();
-        Palindrome.main(null);
-
-        String expected = "cec\r\n" +
-                "aceca\r\n" +
-                "racecar\r\n" +
-                "bb\r\n" +
-                "bab";
-
-        assertEquals(expected, outputStreamCapture.toString().trim());
-
-    }
-
-    @Test
-    public void TestErrorThrow(){
-        try{
-            Palindrome.findPalindromes(null);
+    public void TestOddCase(){
+        String[] oddWords = {"wow", "solos", "racecar"};
+        int[] actual = new int[oddWords.length];
+        for(int i = 0; i<oddWords.length; i++){
+            actual[i]= Palindrome.findPalindromes(oddWords[i]).size();
         }
-        catch(Exception e){
-            assertEquals("Parameter 'word' is missing", e.getMessage());
-        }
+        assertEquals(1, actual[0]);
+        assertEquals(2, actual[1]);
+        assertEquals(3, actual[2]);
     }
 
     @Test
-    public void TestPalindromeFinder(){
-        String[] words = {"racecar", "fish", "kebbab"};
+    public void TestEvenCase(){
+        String[] words = {"abba", "noon", "Redder"};
         int[] actual = new int[words.length];
         for(int i = 0; i<words.length; i++){
-             actual[i]= Palindrome.findPalindromes(words[i]).size();
+            actual[i]= Palindrome.findPalindromes(words[i]).size();
         }
-        assertEquals(3, actual[0]);
-        assertEquals(0, actual[1]);
-        assertEquals(2, actual[2]);
+        assertEquals(2, actual[0]);
+        assertEquals(2, actual[1]);
+        assertEquals(3, actual[2]);
     }
+
+    @Test
+    public void TestEvenOddCase(){
+        String[] words = {"wow", "abba", "noon", "kayak", "Redder"};
+        int[] actual = new int[words.length];
+        for(int i = 0; i<words.length; i++){
+            actual[i]= Palindrome.findPalindromes(words[i]).size();
+        }
+        assertEquals(1, actual[0]);
+        assertEquals(2, actual[1]);
+        assertEquals(2, actual[2]);
+        assertEquals(2, actual[3]);
+        assertEquals(3, actual[4]);
+    }
+
+    @Test
+    public void TestNoPalindromes(){
+        List<String> actual = Palindrome.findPalindromes("astrophysics");
+        assertEquals(0, actual.size());
+    }
+
+    @Test
+    public void TestDuplicate(){
+        List<String> actual = Palindrome.findPalindromes("BBB");
+        assertEquals(3, actual.size());
+    }
+
+    @Test
+    public void TestNullInput(){
+        Exception emptyE = assertThrows(Exception.class, () -> Palindrome.findPalindromes(""));
+        assertEquals("Parameter 'word' is missing", emptyE.getMessage());
+        Exception nullE = assertThrows(Exception.class, () -> Palindrome.findPalindromes(null));
+        assertEquals("Parameter 'word' is missing", nullE.getMessage());
+    }
+
+    @Test
+    public void TestLengthOneInput(){
+        Exception exception = assertThrows(Exception.class, () -> Palindrome.findPalindromes("i"));
+        assertEquals("Parameter 'word' is missing", exception.getMessage());
+    }
+
+
 }

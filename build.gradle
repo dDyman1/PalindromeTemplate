@@ -26,6 +26,9 @@ dependencies {
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.13'
+
+    testCompile 'org.codehaus.groovy:groovy-ant:2.4.13'
+    testCompile 'net.sourceforge.pmd:pmd-java:6.0.0'
 }
 
 application {

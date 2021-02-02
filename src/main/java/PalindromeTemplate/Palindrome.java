@@ -1,15 +1,13 @@
 package PalindromeTemplate;
 
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class Palindrome {
     public static void main(String[] args) {
-
+       //ToDo
     }
 
-    public static Set<String> findPalindromes(String word) {
-
+    public static List<String> findPalindromes(String word) throws IllegalArgumentException{
+        //ToDo
     }
 }
